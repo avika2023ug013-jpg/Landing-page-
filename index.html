@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ehsaas - Independence Begins During Lunchtime</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        royalBlue: '#1D4ED8',
+                        satYellow: '#FACC15', // Saturated Yellow
+                        offWhite: '#F9FAFB',
+                        lightGrey: '#F3F4F6',
+                        darkText: '#111827'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Fredoka', 'sans-serif'], // Friendly, rounded font for headers
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(29, 78, 216, 0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom accessibility focus styles */
+        *:focus-visible {
+            outline: 4px solid #FACC15;
+            outline-offset: 2px;
+        }
+
+        /* Custom Animations */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .hero-img {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Parallax & Magical Background */
+        .parallax-layer {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+            will-change: transform;
+        }
+
+        .hero-shape {
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.1;
+        }
+
+        #magic-spotlight {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y),
+                    rgba(29, 78, 216, 0.08),
+                    transparent 100%);
+            transition: opacity 0.3s ease;
+        }
+
+        #cursor-glow {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: rgba(250, 204, 21, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            filter: blur(15px);
+            transform: translate(-50%, -50%);
+            left: var(--mouse-x);
+            top: var(--mouse-y);
+            mix-blend-mode: screen;
+        }
+
+        section,
+        header,
+        footer,
+        nav {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Glowing Kids Illustration */
+        .glowing-illustration-container {
+            opacity: 0.3;
+            filter: grayscale(1);
+            transform: scale(0.9);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 3rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .glowing-illustration-container.is-active,
+        .glowing-illustration-container:hover {
+            opacity: 1;
+            filter: grayscale(0) drop-shadow(0 0 15px rgba(250, 204, 21, 0.6));
+            transform: scale(1);
+        }
+
+        .small-illustration {
+            max-width: 500px;
+            /* Increased size */
+            width: 100%;
+            height: auto;
+        }
+
+        /* Infinite Marquee Motion */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .marquee-content {
+            display: inline-flex;
+            gap: 24px;
+            animation: scroll-left 40s linear infinite;
+        }
+
+        .marquee-content:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .feature-tag {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 20px rgba(29, 78, 216, 0.05);
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+    </style>
+    <style>
+        /* Carousel Styles */
+        .carousel-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-grid {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 30px;
+            padding: 20px 10px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            max-width: 100%;
+            scroll-behavior: smooth;
+            align-items: stretch;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .slider-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slide-card {
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 10px 40px -10px rgba(29, 78, 216, 0.15);
+            flex: 0 0 320px;
+            scroll-snap-align: center;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #f3f4f6;
+            text-align: left;
+        }
+
+        .slide-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-image-wrapper {
+            height: 200px;
+            overflow: hidden;
+            border-radius: 2rem 2rem 0 0;
+            position: relative;
+            background-color: #EFF6FF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-card .image-placeholder {
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+            transform: scale(1.05);
+            opacity: 1;
+            /* Changed to 1 as we are using images */
+        }
+
+        .slide-card.active-card .image-placeholder {
+            transform: scale(1.0);
+        }
+
+        .slide-content {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .pill-label {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background-color: white;
+            color: #111827;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 10;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card-headline {
+            font-size: 1.5rem;
+            color: #111827;
+            margin: 0;
+            opacity: 1;
+            /* Made visible by default */
+            transform: translateX(0);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+        }
+
+        .slide-card.active-card .card-headline {
+            transform: scale(1.02);
+            /* Slight scale up on active to keep interaction feel */
+        }
+
+        .card-text {
+            font-size: 1rem;
+            color: #4B5563;
+            margin: 0;
+            opacity: 1;
+            /* Made visible by default */
+            transform: translateY(0);
+            transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
+            font-style: italic;
+        }
+
+        .slide-card.active-card .card-text {
+            color: #111827;
+            /* Darken text when active */
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            width: 80px;
+            height: 80px;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            z-index: 10;
+            flex-shrink: 0;
+            box-shadow: none;
+        }
+
+        .nav-btn:hover {
+            background: transparent;
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        .prev-btn {
+            margin-right: -20px;
+        }
+
+        .next-btn {
+            margin-left: -20px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-btn {
+                display: none;
+            }
+
+            .slider-grid {
+                padding: 20px 40px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-lightGrey text-darkText font-sans antialiased selection:bg-satYellow selection:text-black">
+
+    <!-- Navigation -->
+    <nav class="bg-white py-4 px-6 md:px-12 fixed w-full top-0 z-50 shadow-sm" name="navigation">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <!-- Logo Placeholder -->
+                <div class="text-3xl font-display font-bold text-royalBlue tracking-tight">Ehsaas</div>
+            </div>
+            <div class="hidden md:flex gap-8 items-center font-medium text-gray-700">
+                <a href="#how-it-works" class="hover:text-royalBlue transition">How it Works</a>
+                <a href="#features" class="hover:text-royalBlue transition">Features</a>
+                <a href="#stories" class="hover:text-royalBlue transition">Stories</a>
+            </div>
+            <button
+                class="bg-royalBlue text-white px-6 py-2.5 rounded-full font-bold hover:bg-blue-800 transition shadow-lg transform hover:-translate-y-0.5">
+                Get Ehsaas
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-20 mb-12 px-6 md:px-12 bg-white rounded-b-[3rem] shadow-soft relative overflow-hidden"
+        name="hero-section">
+
+        <!-- Parallax Background Elements -->
+        <div class="parallax-layer hero-shape bg-royalBlue w-64 h-64" style="top: 10%; right: 5%;" data-speed="0.2">
+        </div>
+        <div class="parallax-layer hero-shape bg-satYellow w-48 h-48" style="top: 40%; left: -5%;" data-speed="0.1">
+        </div>
+        <div class="parallax-layer hero-shape bg-royalBlue w-32 h-32" style="bottom: 10%; left: 20%;" data-speed="0.3">
+        </div>
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8 z-10">
+                <div
+                    class="inline-block bg-blue-50 text-royalBlue px-4 py-1.5 rounded-full font-semibold text-sm tracking-wide">
+                    Designed for Visually Impaired Kids
+                </div>
+                <h1 class="text-5xl md:text-6xl font-display font-bold leading-tight text-gray-900 animate-on-scroll">
+                    Independence begins during <span
+                        class="text-royalBlue underline decoration-satYellow decoration-4 underline-offset-4">lunchtime.</span>
+                </h1>
+                <p class="text-xl text-gray-600 leading-relaxed max-w-lg">
+                    We help visually impaired children eat independently, confidently, and with dignity through tactile
+                    design and intuitive engineering.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button
+                        class="bg-satYellow text-gray-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-400 transition shadow-md flex items-center justify-center gap-2">
+                        Get Ehsaas Lunchbox
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                    <button
+                        class="border-2 border-royalBlue text-royalBlue px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition flex items-center justify-center">
+                        Request School Demo
+                    </button>
+                </div>
+            </div>
+            <div class="relative z-10">
+                <div class="absolute -inset-4 bg-satYellow/20 rounded-full blur-3xl opacity-50"></div>
+                <div
+                    class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white transform rotate-2 hover:rotate-0 transition duration-500">
+                    <img src="assets/hero-boy.png" alt="Happy child eating lunch independently"
+                        class="w-full h-full object-cover hero-img animate-on-scroll">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Story Section -->
+    <section id="stories" class="py-20 px-6 md:px-12 bg-lightGrey" name="story-section">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-4 animate-on-scroll">“Before
+                    Ehsaas”</h2>
+
+                <div class="carousel-wrapper mt-10">
+                    <button class="nav-btn prev-btn" id="prevBtn" aria-label="Previous slide">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                            stroke="currentColor" class="w-16 h-16">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                    </button>
+
+                    <div class="slider-grid" id="sliderGrid">
+                        <!-- Card 1: User Story -->
+                        <div class="slide-card">
+                            <div class="card-image-wrapper">
+                                <span class="pill-label">User Story</span>
+                                <div class="image-placeholder" style="background: none; height: 100%; width: 100%;">
+                                    <img src="assets/user_story.jpg" alt="User Story"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="slide-content">
+                                <h3 class="card-headline">“My Lunch Used to Spill Every Day”</h3>
+                                <p class="card-text">Before Ehsaas, I struggled to find food in my lunchbox. I mixed
+                                    curry with rice and felt embarrassed in front of my friends. Now, I can eat on my
+                                    own with confidence.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Design Insight -->
+                        <div class="slide-card">
+                            <div class="card-image-wrapper">
+                                <span class="pill-label">Design Insight</span>
+                                <div class="image-placeholder" style="background: none; height: 100%; width: 100%;">
+                                    <img src="assets/design_insight.jpg" alt="Design testing"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="slide-content">
+                                <h3 class="card-headline">“Why Tactile Textures Matter for Blind Kids”</h3>
+                                <p class="card-text">Through testing with visually impaired children, we learned that
+                                    raised dots and lines help them identify food compartments faster and independently.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Parent Voice -->
+                        <div class="slide-card">
+                            <div class="card-image-wrapper">
+                                <span class="pill-label">Parent Voice</span>
+                                <div class="image-placeholder" style="background: none; height: 100%; width: 100%;">
+                                    <img src="assets/parent_voice.jpg" alt="Parent Voice"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="slide-content">
+                                <h3 class="card-headline">“A Lunchbox Shouldn’t Make My Child Feel Dependent”</h3>
+                                <p class="card-text">As a parent, I wanted my child to eat freely without asking for
+                                    help. Ehsaas gave my child dignity, not just a lunchbox.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 4: Teacher Perspective -->
+                        <div class="slide-card">
+                            <div class="card-image-wrapper">
+                                <span class="pill-label">Teacher Perspective</span>
+                                <div class="image-placeholder" style="background: none; height: 100%; width: 100%;">
+                                    <img src="assets/teacher_perspective.jpg" alt="Teacher Perspective"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="slide-content">
+                                <h3 class="card-headline">“Confidence in the Classroom”</h3>
+                                <p class="card-text">When students don't need help opening their lunch, they bring that
+                                    same confidence back into the classroom. It's a game changer.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 5: School Impact -->
+                        <div class="slide-card">
+                            <div class="card-image-wrapper">
+                                <span class="pill-label">School Impact</span>
+                                <div class="image-placeholder" style="background: none; height: 100%; width: 100%;">
+                                    <img src="assets/school_impact.jpg" alt="School cafeteria"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="slide-content">
+                                <h3 class="card-headline">“Creating Inclusive Mealtimes”</h3>
+                                <p class="card-text">Ehsaas has transformed our school lunch hours from a stressful
+                                    coordination task into a social, independent experience for every child.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="nav-btn next-btn" id="nextBtn" aria-label="Next slide">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                            stroke="currentColor" class="w-16 h-16">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="mt-10">
+                    <button
+                        class="bg-satYellow text-darkText px-8 py-3 rounded-full font-bold hover:bg-yellow-400 transition shadow-md flex items-center justify-center gap-2 mx-auto">
+                        View all insights
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 px-6 md:px-12 bg-white relative overflow-hidden" name="how-it-works">
+        <!-- Parallax Elements -->
+        <div class="parallax-layer hero-shape bg-satYellow w-32 h-32" style="top: 20%; left: 5%;" data-speed="0.15">
+        </div>
+        <div class="parallax-layer hero-shape bg-royalBlue w-24 h-24" style="bottom: 10%; right: 10%;"
+            data-speed="0.25"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <h2 class="text-3xl md:text-4xl font-display font-bold text-center mb-16">Designed for Touch</h2>
+
+            <div class="relative">
+                <!-- Connecting Line (Desktop) -->
+                <div
+                    class="hidden md:block absolute top-1/2 left-0 w-full h-2 bg-gray-100 -translate-y-1/2 z-0 rounded-full">
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-12 relative z-10">
+                    <!-- Step 1 -->
+                    <div class="bg-white p-6 text-center">
+                        <div
+                            class="w-24 h-24 mx-auto bg-satYellow rounded-full flex items-center justify-center mb-6 shadow-lg border-4 border-white">
+                            <img src="https://api.designfast.io/v1/svg_generator/findone?desc=hand%20touching%20braille%20surface&icon_set=tabler&color=%23111827"
+                                alt="Touch icon" class="w-12 h-12">
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">1. Touch to Identify</h3>
+                        <p class="text-gray-600">Unique tactile textures help identify the top, bottom, and latch
+                            immediately.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="bg-white p-6 text-center">
+                        <div
+                            class="w-24 h-24 mx-auto bg-royalBlue rounded-full flex items-center justify-center mb-6 shadow-lg border-4 border-white">
+                            <img src="https://api.designfast.io/v1/svg_generator/findone?desc=open%20lunchbox&icon_set=tabler&color=%23FFFFFF"
+                                alt="Open icon" class="w-12 h-12">
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">2. Open & Scoop</h3>
+                        <p class="text-gray-600">Assisted-open latches and curved scooping edges prevent spills.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="bg-white p-6 text-center">
+                        <div
+                            class="w-24 h-24 mx-auto bg-satYellow rounded-full flex items-center justify-center mb-6 shadow-lg border-4 border-white">
+                            <img src="https://api.designfast.io/v1/svg_generator/findone?desc=happy%20eating%20child&icon_set=tabler&color=%23111827"
+                                alt="Eat icon" class="w-12 h-12">
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">3. Eat Independently</h3>
+                        <p class="text-gray-600">High contrast interiors make food visible, building true mealtime
+                            confidence.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section (Timeline/Non-Grid Layout) -->
+    <section id="features" class="py-24 px-6 md:px-12 bg-lightGrey overflow-hidden relative" name="features">
+        <!-- Parallax Elements -->
+        <div class="parallax-layer hero-shape bg-royalBlue w-40 h-40" style="top: 15%; right: -5%;" data-speed="0.12">
+        </div>
+        <div class="parallax-layer hero-shape bg-satYellow w-20 h-20" style="top: 60%; left: 8%;" data-speed="0.2">
+        </div>
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="flex flex-col gap-16">
+
+                <!-- Feature 1 -->
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="w-full md:w-1/2">
+                        <div class="rounded-3xl overflow-hidden shadow-xl h-64 md:h-80">
+                            <img src="assets/tactile_texture_detail.jpg"
+                                alt="Tactile textures showing stars and moon on the lid"
+                                class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 space-y-4">
+                        <div
+                            class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm text-royalBlue">
+                            <img src="https://api.designfast.io/v1/svg_generator/findone?desc=braille&icon_set=tabler&color=%231D4ED8"
+                                alt="Texture icon" class="w-8 h-8">
+                        </div>
+                        <h3 class="text-3xl font-display font-bold text-gray-900">Tactile Textures</h3>
+                        <p class="text-lg text-gray-600 leading-relaxed">Every surface tells a story. Distinct raised
+                            patterns guide little fingers to the right orientation instantly.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="flex flex-col md:flex-row-reverse items-center gap-12">
+                    <div class="w-full md:w-1/2">
+                        <div class="rounded-3xl overflow-hidden shadow-xl h-64 md:h-80">
+                            <img src="assets/high_contrast_detail.png"
+                                alt="High contrast royal blue and saturated yellow lunchbox"
+                                class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 space-y-4">
+                        <div
+                            class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm text-royalBlue">
+                            <img src="https://api.designfast.io/v1/svg_generator/findone?desc=eye&icon_set=tabler&color=%231D4ED8"
+                                alt="Vision icon" class="w-8 h-8">
+                        </div>
+                        <h3 class="text-3xl font-display font-bold text-gray-900">High Contrast Colors</h3>
+                        <p class="text-lg text-gray-600 leading-relaxed">Royal Blue exterior meets Saturated Yellow
+                            interior. This 7:1 contrast ratio helps low-vision children distinguish the box from the
+                            food.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="w-full md:w-1/2">
+                        <div class="rounded-3xl overflow-hidden shadow-xl h-64 md:h-80">
+                            <img src="assets/scoop_wall_v3.png" alt="Detail shot of the scoop wall in use"
+                                class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 space-y-4">
+                        <div
+                            class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm text-royalBlue">
+                            <img src="https://api.designfast.io/v1/svg_generator/findone?desc=curve&icon_set=tabler&color=%231D4ED8"
+                                alt="Scoop icon" class="w-8 h-8">
+                        </div>
+                        <h3 class="text-3xl font-display font-bold text-gray-900">The "Scoop" Wall</h3>
+                        <p class="text-lg text-gray-600 leading-relaxed">No more chasing food. One side of the container
+                            is curved upward, allowing spoons to catch food easily without spilling over.</p>
+                    </div>
+                </div>
+
+                <!-- Extra Features Infinite Marquee -->
+                <div class="mt-12 overflow-hidden py-4">
+                    <div class="marquee-container">
+                        <div class="marquee-content" id="marqueeContent">
+                            <!-- Basic Set -->
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Connected Lids</h4>
+                                <p class="text-sm text-gray-500">Never lose a lid again.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Non-slip Base</h4>
+                                <p class="text-sm text-gray-500">Stays put on the table.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Extra Compartment</h4>
+                                <p class="text-sm text-gray-500">For snacks or cutlery.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">BPA-Free Material</h4>
+                                <p class="text-sm text-gray-500">100% safe food-grade plastic.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Child-Safe Latches</h4>
+                                <p class="text-sm text-gray-500">Easy to open, hard to spill.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Thermal Insulation</h4>
+                                <p class="text-sm text-gray-500">Keeps lunch warm for longer.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Lightweight Design</h4>
+                                <p class="text-sm text-gray-500">Perfect for tiny hands.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Easy-Grip Handle</h4>
+                                <p class="text-sm text-gray-500">Ergonomic for daily use.</p>
+                            </div>
+                            <!-- Duplicated for Loop -->
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Connected Lids</h4>
+                                <p class="text-sm text-gray-500">Never lose a lid again.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Non-slip Base</h4>
+                                <p class="text-sm text-gray-500">Stays put on the table.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Extra Compartment</h4>
+                                <p class="text-sm text-gray-500">For snacks or cutlery.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">BPA-Free Material</h4>
+                                <p class="text-sm text-gray-500">100% safe food-grade plastic.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Child-Safe Latches</h4>
+                                <p class="text-sm text-gray-500">Easy to open, hard to spill.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Thermal Insulation</h4>
+                                <p class="text-sm text-gray-500">Keeps lunch warm for longer.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Lightweight Design</h4>
+                                <p class="text-sm text-gray-500">Perfect for tiny hands.</p>
+                            </div>
+                            <div class="feature-tag">
+                                <h4 class="font-bold text-royalBlue">Easy-Grip Handle</h4>
+                                <p class="text-sm text-gray-500">Ergonomic for daily use.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="py-20 px-6 md:px-12 bg-white" name="comparison">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-display font-bold text-center mb-12">Why it matters</h2>
+            <div class="grid md:grid-cols-2 gap-0 border-4 border-gray-100 rounded-3xl overflow-hidden">
+                <!-- Normal -->
+                <div class="bg-gray-50 p-10 flex flex-col items-center text-center opacity-80">
+                    <h3 class="text-xl font-bold text-gray-500 mb-6 uppercase tracking-wider">Standard Lunchbox</h3>
+                    <ul class="space-y-4 text-gray-500 text-left w-full max-w-xs mx-auto">
+                        <li class="flex items-center gap-3">
+                            <span class="text-red-400">✕</span> Hard to orient
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-red-400">✕</span> Low contrast interiors
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-red-400">✕</span> Lids get lost
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-red-400">✕</span> Requires teacher help
+                        </li>
+                    </ul>
+                </div>
+                <!-- Ehsaas -->
+                <div class="bg-royalBlue/5 p-10 flex flex-col items-center text-center relative">
+                    <div
+                        class="absolute top-0 right-0 bg-satYellow text-xs font-bold px-3 py-1 rounded-bl-xl uppercase">
+                        Winner</div>
+                    <h3 class="text-xl font-bold text-royalBlue mb-6 uppercase tracking-wider">Ehsaas Lunchbox</h3>
+                    <ul class="space-y-4 text-gray-800 font-medium text-left w-full max-w-xs mx-auto">
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-600 text-xl">✓</span> Tactile orientation
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-600 text-xl">✓</span> High visibility yellow
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-600 text-xl">✓</span> Attached components
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-600 text-xl">✓</span> 100% Independent
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testing & Trust -->
+    <section class="py-16 px-6 md:px-12 bg-royalBlue text-white rounded-t-[3rem] mt-10" name="trust">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+            <div class="md:w-1/2">
+                <h2 class="text-3xl font-display font-bold mb-4">Tested in Real Schools</h2>
+                <p class="text-blue-100 text-lg mb-8">We didn't just design in a studio. We spent 6 months in blind
+                    schools iterating with 200+ children to get the ergonomics perfect.</p>
+                <div class="flex gap-8">
+                    <div>
+                        <div class="text-4xl font-bold text-satYellow">200+</div>
+                        <div class="text-sm text-blue-200">Kids Tested</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-satYellow">15</div>
+                        <div class="text-sm text-blue-200">Partner Schools</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-satYellow">4.9</div>
+                        <div class="text-sm text-blue-200">Ease Rating</div>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full">
+                <div class="rounded-3xl overflow-hidden border-4 border-blue-500/30">
+                    <img src="https://api.designfast.io/v1/photo_library/findone?desc=group%20of%20visually%20impaired%20children%20eating%20lunch%20together%20school&w=800&h=500&orientation=landscape"
+                        alt="Classroom testing" class="w-full h-64 object-cover opacity-90">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 px-6 md:px-12 bg-lightGrey relative overflow-hidden" name="testimonials">
+        <!-- Parallax Elements -->
+        <div class="parallax-layer hero-shape bg-satYellow w-32 h-32" style="top: 10%; left: -2%;" data-speed="0.18">
+        </div>
+        <div class="parallax-layer hero-shape bg-royalBlue w-48 h-48" style="bottom: 5%; right: 2%;" data-speed="0.22">
+        </div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <h2 class="text-3xl font-display font-bold text-center mb-16 text-gray-900">Voices of Confidence</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm relative">
+                    <div class="text-satYellow text-4xl font-serif absolute top-4 left-6">“</div>
+                    <p class="text-gray-600 mt-6 mb-4">"For the first time, my son came home with an empty lunchbox. He
+                        actually ate everything because he could do it himself."</p>
+                    <div class="flex items-center gap-1 text-satYellow mb-2">★★★★★</div>
+                    <p class="font-bold text-gray-900">Sarah M.</p>
+                    <p class="text-xs text-gray-500">Mother of 7-year-old</p>
+                </div>
+                <!-- Review 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm relative">
+                    <div class="text-satYellow text-4xl font-serif absolute top-4 left-6">“</div>
+                    <p class="text-gray-600 mt-6 mb-4">"The high contrast interior is genius. It helps the kids with low
+                        vision find their food immediately."</p>
+                    <div class="flex items-center gap-1 text-satYellow mb-2">★★★★★</div>
+                    <p class="font-bold text-gray-900">Mr. Roberts</p>
+                    <p class="text-xs text-gray-500">School Principal</p>
+                </div>
+                <!-- Review 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm relative">
+                    <div class="text-satYellow text-4xl font-serif absolute top-4 left-6">“</div>
+                    <p class="text-gray-600 mt-6 mb-4">"I like the scoop wall. My spoon works better now."</p>
+                    <div class="flex items-center gap-1 text-satYellow mb-2">★★★★★</div>
+                    <p class="font-bold text-gray-900">Aryan</p>
+                    <p class="text-xs text-gray-500">Student, Age 9</p>
+                </div>
+            </div>
+        </div>
+        <!-- Large Glowing Illustration positioned near reviews -->
+        <div id="glowingIllustration" class="glowing-illustration-container">
+            <img src="assets/kids_illustration.png" alt="Kids illustration" class="small-illustration">
+        </div>
+        </div>
+    </section>
+
+    <!-- Purpose Section -->
+    <section class="py-24 px-6 md:px-12 bg-white text-center relative overflow-hidden" name="purpose">
+        <!-- Parallax Elements -->
+        <div class="parallax-layer hero-shape bg-royalBlue w-64 h-64" style="top: -10%; left: 50%;" data-speed="0.1">
+        </div>
+        <div class="max-w-3xl mx-auto relative z-10">
+            <h2 class="text-3xl md:text-5xl font-display font-bold text-gray-900 mb-6">At Ehsaas, accessibility is not
+                an add-on — it’s our purpose.</h2>
+            <p class="text-xl text-gray-600 mb-10">We believe that dignity is a right, not a luxury. Every curve,
+                texture, and color we choose is there to empower.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button
+                    class="bg-royalBlue text-white px-8 py-3 rounded-full font-bold hover:bg-blue-800 transition">Explore
+                    the Design Journey</button>
+                <button
+                    class="text-royalBlue font-bold px-8 py-3 rounded-full hover:bg-blue-50 transition border border-transparent hover:border-blue-100">See
+                    How It Works</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 px-6 md:px-12 bg-lightGrey" name="faq">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-3xl font-display font-bold text-center mb-10">Common Questions</h2>
+            <div class="space-y-4">
+                <details
+                    class="group bg-white rounded-2xl shadow-sm p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+                    <summary class="flex items-center justify-between text-lg font-bold text-gray-900">
+                        Is it dishwasher safe?
+                        <span class="ml-auto transition duration-300 group-open:-rotate-180">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </span>
+                    </summary>
+                    <p class="mt-4 text-gray-600 leading-relaxed">Yes! Ehsaas is made from high-quality, BPA-free
+                        plastic that is top-rack dishwasher safe.</p>
+                </details>
+
+                <details
+                    class="group bg-white rounded-2xl shadow-sm p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+                    <summary class="flex items-center justify-between text-lg font-bold text-gray-900">
+                        Does it work for total blindness?
+                        <span class="ml-auto transition duration-300 group-open:-rotate-180">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </span>
+                    </summary>
+                    <p class="mt-4 text-gray-600 leading-relaxed">Absolutely. The tactile markers on the lid and base
+                        allow children with zero vision to orient the box correctly by touch alone.</p>
+                </details>
+
+                <details
+                    class="group bg-white rounded-2xl shadow-sm p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+                    <summary class="flex items-center justify-between text-lg font-bold text-gray-900">
+                        Do you offer bulk pricing for schools?
+                        <span class="ml-auto transition duration-300 group-open:-rotate-180">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </span>
+                    </summary>
+                    <p class="mt-4 text-gray-600 leading-relaxed">Yes, we partner with schools globally. Click 'Request
+                        School Demo' to get in touch with our partnerships team.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="py-24 px-6 md:px-12 bg-satYellow text-center relative overflow-hidden" name="final-cta">
+        <!-- Parallax Elements -->
+        <div class="parallax-layer hero-shape bg-royalBlue w-32 h-32" style="top: 10%; right: 15%;" data-speed="0.15">
+        </div>
+        <div class="parallax-layer hero-shape bg-white w-24 h-24" style="bottom: -10%; left: 10%; opacity: 0.2;"
+            data-speed="0.2"></div>
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h2 class="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-8">Ready to give your child
+                independence at lunchtime?</h2>
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <button
+                    class="bg-gray-900 text-white px-10 py-4 rounded-xl font-bold text-xl hover:bg-gray-800 transition shadow-lg">
+                    Get Ehsaas Lunchbox
+                </button>
+                <button
+                    class="bg-white text-gray-900 border-2 border-gray-900 px-10 py-4 rounded-xl font-bold text-xl hover:bg-gray-50 transition">
+                    Request School Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-20 pb-10 px-6 md:px-12" name="footer">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-16">
+            <div class="col-span-1 md:col-span-1">
+                <div class="text-3xl font-display font-bold text-white tracking-tight mb-6">Ehsaas</div>
+                <p class="text-gray-400 mb-6">Updates from our design journey, written with care.</p>
+                <form class="flex flex-col gap-3">
+                    <input type="email" placeholder="Email address"
+                        class="bg-gray-800 border-none rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-satYellow">
+                    <button
+                        class="bg-royalBlue text-white px-4 py-3 rounded-lg font-bold hover:bg-blue-700 transition">Subscribe</button>
+                </form>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-lg mb-6 text-satYellow">Product</h4>
+                <ul class="space-y-4 text-gray-400">
+                    <li><a href="#" class="hover:text-white transition">Features</a></li>
+                    <li><a href="#" class="hover:text-white transition">Pricing</a></li>
+                    <li><a href="#" class="hover:text-white transition">Replacement Parts</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-lg mb-6 text-satYellow">Support</h4>
+                <ul class="space-y-4 text-gray-400">
+                    <li><a href="#" class="hover:text-white transition">Care Instructions</a></li>
+                    <li><a href="#" class="hover:text-white transition">Accessibility Policy</a></li>
+                    <li><a href="#" class="hover:text-white transition">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-lg mb-6 text-satYellow">Impact</h4>
+                <ul class="space-y-4 text-gray-400">
+                    <li><a href="#" class="hover:text-white transition">Our Stories</a></li>
+                    <li><a href="#" class="hover:text-white transition">For Schools</a></li>
+                    <li><a href="#" class="hover:text-white transition">Donate</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+            &copy; 2023 Ehsaas Design. Crafted with love for every ability.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Carousel Logic
+            const sliderGrid = document.getElementById('sliderGrid');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const cards = document.querySelectorAll('.slide-card');
+
+            // Scroll Buttons
+            const scrollAmount = 350; // Approximates card width + gap
+
+            if (prevBtn && nextBtn && sliderGrid) {
+                prevBtn.addEventListener('click', () => {
+                    sliderGrid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    sliderGrid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                });
+            }
+
+            // Carousel Center Detection for Animations
+            const carouselObserverOptions = {
+                root: sliderGrid,
+                threshold: 0.5,
+                rootMargin: "0px -20% 0px -20%"
+            };
+
+            const carouselObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active-card');
+                    } else {
+                        entry.target.classList.remove('active-card');
+                    }
+                });
+            }, carouselObserverOptions);
+
+            cards.forEach(card => {
+                carouselObserver.observe(card);
+            });
+
+            // Trigger Glow for Illustration
+            const glowIllustration = document.getElementById('glowingIllustration');
+            const glowObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-active');
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            if (glowIllustration) {
+                glowObserver.observe(glowIllustration);
+            }
+            // Parallax & Magical Effects Logic
+            const parallaxElements = document.querySelectorAll('.parallax-layer');
+            const spotlight = document.getElementById('magic-spotlight');
+            const cursorGlow = document.getElementById('cursor-glow');
+
+            window.addEventListener('scroll', () => {
+                const scrollY = window.pageYOffset;
+                parallaxElements.forEach(el => {
+                    const speed = el.getAttribute('data-speed') || 0.1;
+                    el.style.transform = `translateY(${scrollY * speed}px)`;
+                });
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                const x = e.clientX + 'px';
+                const y = e.clientY + 'px';
+                document.documentElement.style.setProperty('--mouse-x', x);
+                document.documentElement.style.setProperty('--mouse-y', y);
+            });
+
+            document.addEventListener('mouseleave', () => {
+                spotlight.style.opacity = '0';
+                cursorGlow.style.opacity = '0';
+            });
+
+            document.addEventListener('mouseenter', () => {
+                spotlight.style.opacity = '1';
+                cursorGlow.style.opacity = '1';
+            });
+        });
+    </script>
+    <div id="magic-spotlight"></div>
+    <div id="cursor-glow"></div>
+</body>
+
+</html>
